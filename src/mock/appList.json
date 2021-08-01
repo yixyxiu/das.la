@@ -1,0 +1,52 @@
+{
+    "mesg": "请求成功",
+    "code": 0,
+    "data": {
+        "pageIndex": 1,
+        "total": 54,
+        "pageSize": 10,
+        "rows": [
+            {
+                "id": "100001",
+                "appName": "清华大学",
+                "platform": 1,
+                "channel": 1,
+                "status": 1,
+                "createTime": "2021-07-14 12:20:30"
+            },
+            {
+                "id": "100002",
+                "appName": "北京大学",
+                "platform": 1,
+                "channel": 1,
+                "status": 1,
+                "createTime": "2021-07-15 12:20:30"
+            },
+            {
+                "id": "100003",
+                "appName": "中山大学",
+                "platform": 1,
+                "channel": 1,
+                "status": 1,
+                "createTime": "2021-07-16 12:20:30"
+            },
+            {
+                "id": "100004",
+                "appName": "深圳大学",
+                "platform": 1,
+                "channel": 1,
+                "status": 1,
+                "createTime": "2021-07-17 12:20:30"
+            },
+            {
+                "id": "100005",
+                "appName": "广州大学",
+                "platform": 1,
+                "channel": 1,
+                "status": 1,
+                "createTime": "2021-07-18 12:20:30"
+            }
+        ]
+    },
+    "currentTime": 1613983457248
+}
