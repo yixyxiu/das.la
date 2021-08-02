@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, Space,Input, Button, Row, Col, Table } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Card, Space,Input, Button, Table } from 'antd';
+import https from '../api/https'
 var blake2b = require('blake2b');
 const { TextArea } = Input;
 
@@ -17,6 +17,14 @@ export default class AddShop extends React.Component {
               title: '可选账号',
               dataIndex: 'name',
               key: 'name',
+            },
+            {
+              title: '状态',
+              render: record => (
+                <Space size="middle">
+                    {record.status==0?'检测种':'可注册'}
+                </Space>
+              )
             },
             {
               title: '操作',
@@ -66,15 +74,17 @@ export default class AddShop extends React.Component {
                             arr.push(item);
                             result.push({
                                 id: result.length+1,
+                                status: 0,
                                 name: item
                             })
                         }
                     }
-                }else if(item.length>10){
+                }else if(item.length>9){
                     if(!arr.includes(item)){
                         arr.push(item);
                         result.push({
                             id: result.length+1,
+                            status: 0,
                             name: item
                         })
                     }
@@ -85,6 +95,8 @@ export default class AddShop extends React.Component {
         this.setState({ 
             list: result
         });
+
+        this.isReadyList(result)
     }
     //校验
     strInit = text => {
@@ -105,6 +117,33 @@ export default class AddShop extends React.Component {
         window.open("https://app.gogodas.com/account/register/"+record.name+".bit?inviter=cryptofans.bit&channel=cryptofans.bit", "newW")
     }
     
+
+    sleep = async (text,idx) => {
+        let that = this;
+        return new Promise((resolve) => {
+            https.fetchGet("https://autumnfish.cn/search", {'keywords':text})
+            .then(data => {
+                let result = that.state.list;
+                result[idx].status = 1;
+                this.setState({ 
+                    list: result
+                });
+                setTimeout(() => {
+                    resolve();
+                }, 2000);
+            })
+        });
+    }
+
+    isReadyList = async (list) => {
+        let strArr = ['晴天','阴天','雨天','彩虹','海底'];
+        for(var i=0;i<list.length;i++){
+            let item = list[i];
+            /* 等待0.2s */
+            await this.sleep(item.name,i);
+        }
+    }
+
     componentDidMount() {
         
     }
