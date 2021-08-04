@@ -3,7 +3,7 @@ import { Card, Space,Input, Button, Table } from 'antd';
 import https from '../api/https'
 var blake2b = require('blake2b');
 const { TextArea } = Input;
-
+let das = require('../mock/das.json');
 export default class AddShop extends React.Component {
     
 
@@ -18,14 +18,14 @@ export default class AddShop extends React.Component {
               dataIndex: 'name',
               key: 'name',
             },
-            {
-              title: '状态',
-              render: record => (
-                <Space size="middle">
-                    {record.status==0?'检测种':'可注册'}
-                </Space>
-              )
-            },
+            // {
+            //   title: '状态',
+            //   render: record => (
+            //     <Space size="middle">
+            //         {record.status==0?'检测种':'可注册'}
+            //     </Space>
+            //   )
+            // },
             {
               title: '操作',
               width: 100,
@@ -52,12 +52,13 @@ export default class AddShop extends React.Component {
     }
 
     search = () =>{
+        
+        let reserved = das.reserved;
+        let registered = das.registered;
         let data = this.state.snsArr;
-        //console.log(data)
         let result = [];
         let arr = [];
         for(let i=0; i<data.length; i++){
-
             let item = data[i];
             //去标点符号并转小写
             item = item.replace(/\s/g,"").replace(/[^a-zA-Z0-9]/g,"").toLowerCase();
@@ -69,8 +70,8 @@ export default class AddShop extends React.Component {
                 }else if(item.length>4 && item.length<10){
 
                     if(this.strInit(item)){
-                        
-                        if(!arr.includes(item)){
+                        let str = item + '.bit';
+                        if(!arr.includes(str) && !reserved.includes(str) && !registered.includes(str)){
                             arr.push(item);
                             result.push({
                                 id: result.length+1,
@@ -80,7 +81,8 @@ export default class AddShop extends React.Component {
                         }
                     }
                 }else if(item.length>9){
-                    if(!arr.includes(item)){
+                    let str = item + '.bit';
+                    if(!arr.includes(str) && !reserved.includes(str) && !registered.includes(str)){
                         arr.push(item);
                         result.push({
                             id: result.length+1,
@@ -96,7 +98,7 @@ export default class AddShop extends React.Component {
             list: result
         });
 
-        this.isReadyList(result)
+        
     }
     //校验
     strInit = text => {
@@ -145,7 +147,7 @@ export default class AddShop extends React.Component {
     }
 
     componentDidMount() {
-        
+        //this.isReadyList(result)
     }
 
     render() {
