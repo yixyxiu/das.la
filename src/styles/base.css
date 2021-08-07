@@ -147,3 +147,7 @@ input::-ms-clear, input::-ms-reveal{
   width: calc(100% - 55px);
 }
   
+.main-page-wrapper{
+  background:url(https://da.systems/images/logo2.svg),linear-gradient(rgba(255,255,255,0.5),rgba(255,255,255,0.5));
+  background-blend-mode: overlay;
+}
