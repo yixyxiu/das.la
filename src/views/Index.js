@@ -2,24 +2,33 @@ import React from 'react';
 import { Card, Space, Input, Button, Table, Alert } from 'antd';
 import { SearchOutlined, RedoOutlined } from '@ant-design/icons';
 import https from '../api/https'
+import TextArea from 'antd/lib/input/TextArea';
 
 
 var blake2b = require('blake2b');
-const { TextArea } = Input;
-let das = require('../mock/das.json');
+//const { TextArea } = Input;
+let das = require('../mock/registered.json');
+das.suffixList = require('../mock/suffix.json');
+das.reserved = require('../mock/reserved.json');
+das.recommendList = require('../mock/recommendList.json');
+das.description = "DAS is a blockchain-based, open source, censorship-resistant decentralized account system that provides a globally unique naming system with a .bit suffix that can be used for cryptocurrency transfers, domain name resolution, authentication, and other scenarios."
 
+console.log(das.suffixList)
 
 export default class AddShop extends React.Component {
 
 
     state = {
         snsArr: [],
+        keyword: '',
         list: [
 
         ],
         recommendList: [
 
         ],
+        keywordList:[],
+        animationClass:'dasAnimation',
         columns: [
             {
                 title: '可选账号',
@@ -57,7 +66,7 @@ export default class AddShop extends React.Component {
                 snsArr.splice(index, 1);//删除空项 
             }
         })
-        this.setState({ snsArr });
+        this.setState({ snsArr:snsArr });
     }
 
     search = () => {
@@ -142,6 +151,50 @@ export default class AddShop extends React.Component {
         window.open("https://app.gogodas.com/account/register/" + record.name + ".bit?inviter=cryptofans.bit&channel=cryptofans.bit", "newW")
     }
 
+    keywordChanged = e => {
+        let snsArr = e.target.value
+      
+        snsArr = snsArr.replace(/\s/g, "").replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+        console.log(snsArr)
+
+        this.setState({ keyword: snsArr });
+    }
+
+    keywordSearch = () => {
+        const reg = /^[a-z\d]+$/;
+        console.log(reg.test(this.state.keyword))
+        console.log(this.state.keyword);
+
+        let reserved = das.reserved;
+        let registered = das.registered;
+        let recommendList = das.recommendList;
+        let keyword = this.state.keyword;
+        let result = [];
+        let arr = [];
+
+
+        keyword = keyword.replace(/\s/g, "").replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+        for(let i = 0; i < das.suffixList.length; i++) {
+            let accountName = keyword + das.suffixList[i];
+            if (this.canRegister(accountName)) {
+                let account = accountName + '.bit';
+                // 排除
+                if (!reserved.includes(account) && !registered.includes(account)) {
+                    result.push({
+                        id: result.length + 1,
+                        status: 0,
+                        name: accountName
+                    })
+                }
+            }
+        }
+
+        //console.log(result)
+        this.setState({
+            keywordList: result
+        });
+    }
+
     refreshRecommendList = () => {
 
         let reserved = das.reserved;
@@ -206,10 +259,10 @@ export default class AddShop extends React.Component {
     }
 
     render() {
-        const { list, recommendList, columns } = this.state
+        const { list, recommendList, keywordList, columns } = this.state
 
         return (
-            <div className='wrapper'>
+            <div className={this.state.animationClass}>
                 <Card title="DAS 注册小助手" bordered={false}>
                     <div style={{ display: 'inline-block', position: 'absolute', right: 15, top: 18, textAlign: 'right' }}>
                         <a style={{ color: '#1890ff' }} href="https://da.systems/explorer?inviter=cryptofans.bit&channel=cryptofans.bit&locale=zh-CN&utm_source=cryptofans+">【了解DAS】</a>
@@ -217,7 +270,7 @@ export default class AddShop extends React.Component {
                     <Alert message="用法：将你想要的账号列表输入/粘贴到下方的编辑框内，或者粘贴一篇英文文章到编辑框内，查询哪些账号是可注册的。" type="info" />
                     <br />
                     <div style={{ position: 'relative', paddingRight: 100 }}>
-                        <TextArea onChange={(e) => this.textAreaChange(e)} placeholder="" autoSize />
+                        <TextArea onChange={(e) => this.textAreaChange(e)} allowClear placeholder={das.description} rows={4} />
                         <div style={{ display: 'inline-block', position: 'absolute', right: 15, top: 0, width: 70, textAlign: 'right' }}>
                             <Button type="primary" shape="round" icon={<SearchOutlined />} onClick={() => this.search()}>查询</Button>
                         </div>
@@ -225,10 +278,20 @@ export default class AddShop extends React.Component {
                     <br />
                     <Table rowKey={(item) => item.id} dataSource={list} columns={columns} pagination={false} />
                     <br />
-
-
                 </Card>
-                <br />
+                <Card title="按关键字匹配" bordered={false}>
+                    <Alert message="用法：将你想要的账号前缀输入到编辑框内，查询哪些账号是可注册的。" type="info" />
+                    <br />
+                    <div style={{ position: 'relative', paddingRight: 100 }}>
+                        <Input onBlur={(e) => this.keywordChanged(e)} placeholder="defi" allowClear maxLength={10} rows={1}/>
+                        <div style={{ display: 'inline-block', position: 'absolute', right: 15, top: 0, width: 70, textAlign: 'right' }}>
+                            <Button type="primary" shape="round" icon={<SearchOutlined />} onClick={() => this.keywordSearch()}>搜索</Button>
+                        </div>
+                    </div>
+                    <br />
+                    <Table rowKey={(item) => item.id} dataSource={keywordList} columns={columns} pagination={false} />
+                    <br />
+                </Card>
                 <Card title="还是没找到心仪的账号？" bordered={false} extra={<Button type="primary" shape="round" danger icon={<RedoOutlined />} onClick={() => this.refreshRecommendList()}>换一批</Button>}>
                     <Alert
                         message="温馨提示"
