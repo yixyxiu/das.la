@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Space, Input, Button, Table, Alert } from 'antd';
+import { Card, Space, Input, Button, Table, Alert, Pagination } from 'antd';
 import { SearchOutlined, RedoOutlined } from '@ant-design/icons';
 import https from '../api/https'
 import TextArea from 'antd/lib/input/TextArea';
@@ -160,7 +160,8 @@ export default class AddShop extends React.Component {
         keyword = keyword.replace(/\s/g, "").replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
         for (let i = 0; i < das.suffixList.length; i++) {
             let accountName = keyword + das.suffixList[i];
-            if (this.canRegister(accountName)) {
+            // 只在结果集里显示 10 位以下的可注册账号
+            if (this.canRegister(accountName) && accountName.length < 10) {
                 let account = accountName + '.bit';
                 // 排除
                 if (!reserved.includes(account) && !registered.includes(account)) {
@@ -258,7 +259,7 @@ export default class AddShop extends React.Component {
                         </div>
                     </div>
                     <br />
-                    <Table rowKey={(item) => item.id} dataSource={list} columns={columns} pagination={false} />
+                    <Table rowKey={(item) => item.id} dataSource={list} columns={columns} />
                     <br />
                 </Card>
                 <Card title="按关键字匹配" bordered={false}>
@@ -271,7 +272,7 @@ export default class AddShop extends React.Component {
                         </div>
                     </div>
                     <br />
-                    <Table rowKey={(item) => item.id} dataSource={keywordList} columns={columns} pagination={false} />
+                    <Table rowKey={(item) => item.id} dataSource={keywordList} columns={columns}  />
                     <br />
                 </Card>
                 <Card title="还是没找到心仪的账号？" bordered={false} extra={<Button type="primary" shape="round" danger icon={<RedoOutlined />} onClick={() => this.refreshRecommendList()}>换一批</Button>}>
@@ -282,7 +283,7 @@ export default class AddShop extends React.Component {
                         showIcon
                     />
                     <br></br>
-                    <Table rowKey={(item) => item.id} dataSource={recommendList} columns={columns} pagination={false} />
+                    <Table rowKey={(item) => item.id} dataSource={recommendList} columns={columns} />
                     <br />
                 </Card>
             </div>
