@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Space, Input, Button, Table, Alert, Pagination } from 'antd';
+import { Card, Space, Input, Button, Table, Alert, Avatar } from 'antd';
 import { SearchOutlined, RedoOutlined } from '@ant-design/icons';
 import https from '../api/https'
 import TextArea from 'antd/lib/input/TextArea';
@@ -30,6 +30,14 @@ export default class AddShop extends React.Component {
         keywordList: [],
         animationClass: 'dasAnimation',
         columns: [
+            {
+                dataIndex: 'avatar',
+                key: 'name',
+                width: 50,
+                render: (text, record, index) => (
+                    <Avatar src={"https://identicons.da.systems/identicon/" + record.name} />
+                ),
+            },
             {
                 title: '可选账号',
                 dataIndex: 'name',
@@ -259,7 +267,7 @@ export default class AddShop extends React.Component {
                         </div>
                     </div>
                     <br />
-                    <Table rowKey={(item) => item.id} dataSource={list} columns={columns} />
+                    <Table rowKey={(item) => item.id} dataSource={list} columns={columns} rowClassName='das-account-name' showHeader={false}/>
                     <br />
                 </Card>
                 <Card title="按关键字匹配" bordered={false}>
@@ -272,7 +280,7 @@ export default class AddShop extends React.Component {
                         </div>
                     </div>
                     <br />
-                    <Table rowKey={(item) => item.id} dataSource={keywordList} columns={columns}  />
+                    <Table rowKey={(item) => item.id} dataSource={keywordList} columns={columns} rowClassName='das-account-name' showHeader={false}/>
                     <br />
                 </Card>
                 <Card title="还是没找到心仪的账号？" bordered={false} extra={<Button type="primary" shape="round" danger icon={<RedoOutlined />} onClick={() => this.refreshRecommendList()}>换一批</Button>}>
@@ -283,7 +291,7 @@ export default class AddShop extends React.Component {
                         showIcon
                     />
                     <br></br>
-                    <Table rowKey={(item) => item.id} dataSource={recommendList} columns={columns} />
+                    <Table rowKey={(item) => item.id} dataSource={recommendList} columns={columns} rowClassName='das-account-name' showHeader={false}/>
                     <br />
                 </Card>
             </div>

@@ -12,6 +12,13 @@ code {
     monospace;
 }
 
+.das-account-name{
+  font-size: 18px;
+  font-weight: 600;
+  color: #11142d;
+  word-break: break-all;
+}
+
 .dasAnimation {
   width: 100wh;
   color: #fff;
