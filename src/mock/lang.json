@@ -1,0 +1,34 @@
+{
+    "zh_CN":{
+        "lang":"简体中文",
+        "app-name":"DAS 注册小助手",
+        "tips":"提示",
+        "about-das":"了解DAS",
+        "wordlist-tips":"用法：将你想要的账号列表输入/粘贴到下方的编辑框内，或者粘贴一篇英文文章到编辑框内，查询哪些账号是可注册的。",
+        "wordlist-search":"查询",
+        "keyword-title":"按关键字匹配",
+        "keyword-tips":"用法：将你想要的账号前缀输入到编辑框内，查询哪些账号是可注册的。",
+        "keyword-search":"搜索",
+        "register-btn":"抢注该账号",
+        "recommend-title":"还是没找到心仪的账号？",
+        "recommend-warning":"温馨提示",
+        "recommend-tips":"小助手为你推荐了以下账号，请理性注册 DAS 账号",
+        "recommend-change-list":"换一批"
+    },
+    "en_US":{
+        "lang":"English",
+        "app-name":"DAS Register Tool",
+        "tips":"Tips",
+        "about-das":"About DAS",
+        "wordlist-tips":"Bulk Search：Paste some words or an article conent into text area，then amazing thing will happen.",
+        "wordlist-search":"query",
+        "keyword-title":"Send me a keyword, give you a better DAS",
+        "keyword-tips":"Tips：Input a keyword such as defi, nft, btc, then amazing thing happens after the 「search」button pressed.",
+        "keyword-search":"Search",
+        "register-btn":"Register",
+        "recommend-title":"Recomended list",
+        "recommend-warning":"Tips",
+        "recommend-tips":"You can select an account to register from the recommended list.",
+        "recommend-change-list":"Any more?"
+    }
+}

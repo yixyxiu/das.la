@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, Space, Input, Button, Table, Alert, Avatar } from 'antd';
-import { SearchOutlined, RedoOutlined } from '@ant-design/icons';
+import { Card, Space, Input, Button, Table, Alert, Avatar, Menu, Dropdown, Divider } from 'antd';
+import { SearchOutlined, RedoOutlined, DownOutlined } from '@ant-design/icons';
 import https from '../api/https'
 import TextArea from 'antd/lib/input/TextArea';
 
@@ -13,7 +13,10 @@ das.reserved = require('../mock/reserved.json');
 das.recommendList = require('../mock/recommendList.json');
 das.description = "DAS is a blockchain-based, open source, censorship-resistant decentralized account system that provides a globally unique naming system with a .bit suffix that can be used for cryptocurrency transfers, domain name resolution, authentication, and other scenarios."
 
-console.log(das.suffixList)
+let localeConfig = require('../mock/lang.json');
+
+
+console.log(localeConfig)
 
 export default class AddShop extends React.Component {
 
@@ -21,8 +24,8 @@ export default class AddShop extends React.Component {
     state = {
         snsArr: [],
         keyword: '',
+        locale: 'zh_CN',
         list: [
-
         ],
         recommendList: [
 
@@ -58,7 +61,7 @@ export default class AddShop extends React.Component {
                 align: 'right',
                 render: record => (
                     <Space size="middle">
-                        <Button type="primary" size={'normal'} shape="round" onClick={() => this.add(record)}>抢注该账号</Button>
+                        <Button type="primary" size={'normal'} shape="round" onClick={() => this.add(record)}>{this.langConfig('register-btn')}</Button>
                     </Space>
                 ),
             },
@@ -249,49 +252,81 @@ export default class AddShop extends React.Component {
         //this.isReadyList(result)
     }
 
+    langConfig = (key) => {
+        let locale = this.state.locale;
+
+        return localeConfig[locale][key];
+    }
+    /*
+        onLangMenuClick = ({ key }) => {
+            this.state.locale = key;
+          };
+    */
+
+
     render() {
         const { list, recommendList, keywordList, columns } = this.state
 
+
+        const onLangMenuClick = ({ key }) => {
+            this.setState({ locale: key });
+            console.log(this.state.locale);
+        };
+
+        const menu = (
+            <Menu onClick={onLangMenuClick}>
+                <Menu.Item key="zh_CN">简体中文</Menu.Item>
+                <Menu.Item key="en_US">English</Menu.Item>
+            </Menu>
+        );
+
         return (
             <div className={this.state.animationClass}>
-                <Card title="DAS 注册小助手" bordered={false}>
+                <Card title={this.langConfig('app-name')} bordered={false}>
                     <div style={{ display: 'inline-block', position: 'absolute', right: 15, top: 18, textAlign: 'right' }}>
-                        <a style={{ color: '#1890ff' }} href="https://da.systems/explorer?inviter=cryptofans.bit&channel=cryptofans.bit&locale=zh-CN&utm_source=cryptofans+">【了解DAS】</a>
+                        <Dropdown overlay={menu} >
+                            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                                {this.langConfig('lang')} <DownOutlined />
+                            </a>
+                        </Dropdown>
+                        <Divider type="vertical" />
+                        <a style={{ color: '#1890ff' }} href="https://da.systems/explorer?inviter=cryptofans.bit&channel=cryptofans.bit&locale=zh-CN&utm_source=cryptofans+">{this.langConfig('about-das')}</a>
                     </div>
-                    <Alert message="用法：将你想要的账号列表输入/粘贴到下方的编辑框内，或者粘贴一篇英文文章到编辑框内，查询哪些账号是可注册的。" type="info" />
+
+                    <Alert message={this.langConfig('wordlist-tips')} type="info" />
                     <br />
                     <div style={{ position: 'relative', paddingRight: 100 }}>
                         <TextArea onChange={(e) => this.textAreaChange(e)} allowClear placeholder={das.description} rows={4} />
                         <div style={{ display: 'inline-block', position: 'absolute', right: 15, top: 0, width: 70, textAlign: 'right' }}>
-                            <Button type="primary" shape="round" icon={<SearchOutlined />} onClick={() => this.search()}>查询</Button>
+                            <Button type="primary" shape="round" icon={<SearchOutlined />} onClick={() => this.search()}>{this.langConfig('wordlist-search')}</Button>
                         </div>
                     </div>
                     <br />
-                    <Table rowKey={(item) => item.id} dataSource={list} columns={columns} rowClassName='das-account-name' showHeader={false}/>
+                    <Table rowKey={(item) => item.id} dataSource={list} columns={columns} rowClassName='das-account-name' showHeader={false} />
                     <br />
                 </Card>
-                <Card title="按关键字匹配" bordered={false}>
-                    <Alert message="用法：将你想要的账号前缀输入到编辑框内，查询哪些账号是可注册的。" type="info" />
+                <Card title={this.langConfig('keyword-title')} bordered={false}>
+                    <Alert message={this.langConfig('keyword-tips')} type="info" />
                     <br />
                     <div style={{ position: 'relative', paddingRight: 100 }}>
                         <Input onBlur={(e) => this.keywordChanged(e)} placeholder="defi" allowClear maxLength={10} rows={1} />
                         <div style={{ display: 'inline-block', position: 'absolute', right: 15, top: 0, width: 70, textAlign: 'right' }}>
-                            <Button type="primary" shape="round" icon={<SearchOutlined />} onClick={() => this.keywordSearch()}>搜索</Button>
+                            <Button type="primary" shape="round" icon={<SearchOutlined />} onClick={() => this.keywordSearch()}>{this.langConfig('keyword-search')}</Button>
                         </div>
                     </div>
                     <br />
-                    <Table rowKey={(item) => item.id} dataSource={keywordList} columns={columns} rowClassName='das-account-name' showHeader={false}/>
+                    <Table rowKey={(item) => item.id} dataSource={keywordList} columns={columns} rowClassName='das-account-name' showHeader={false} />
                     <br />
                 </Card>
-                <Card title="还是没找到心仪的账号？" bordered={false} extra={<Button type="primary" shape="round" danger icon={<RedoOutlined />} onClick={() => this.refreshRecommendList()}>换一批</Button>}>
+                <Card title={this.langConfig('recommend-title')} bordered={false} extra={<Button type="primary" shape="round" danger icon={<RedoOutlined />} onClick={() => this.refreshRecommendList()}>{this.langConfig('recommend-change-list')}</Button>}>
                     <Alert
-                        message="温馨提示"
-                        description="小助手为你推荐了以下账号，请理性注册 DAS 账号"
+                        message={this.langConfig('recommend-warning')}
+                        description={this.langConfig('recommend-tips')}
                         type="warning"
                         showIcon
                     />
                     <br></br>
-                    <Table rowKey={(item) => item.id} dataSource={recommendList} columns={columns} rowClassName='das-account-name' showHeader={false}/>
+                    <Table rowKey={(item) => item.id} dataSource={recommendList} columns={columns} rowClassName='das-account-name' showHeader={false} />
                     <br />
                 </Card>
             </div>
