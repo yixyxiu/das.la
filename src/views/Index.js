@@ -11,7 +11,7 @@ let das = require('../mock/registered.json');
 das.suffixList = require('../mock/suffix.json');
 das.reserved = require('../mock/reserved.json');
 das.recommendList = require('../mock/recommendList.json');
-das.description = "DAS is a blockchain-based, open source, censorship-resistant decentralized account system that provides a globally unique naming system with a .bit suffix that can be used for cryptocurrency transfers, domain name resolution, authentication, and other scenarios."
+das.description = "DAS is a cross-chain decentralized account system with a .bit suffix, supporting ETH/TRX and other public chain. It can be used in scenes such as crypto transfers, domain name resolution, and identity authentication. "
 
 let localeConfig = require('../mock/lang.json');
 
