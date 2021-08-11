@@ -96,7 +96,7 @@ export default class AddShop extends React.Component {
                 if (this.canRegister(item)) {
                     let account = item + '.bit';
                     if (!arr.includes(account) && !reserved.includes(account) && !registered.includes(account)) {
-                        arr.push(item);
+                        arr.push(account);
                         result.push({
                             id: result.length + 1,
                             status: 0,
