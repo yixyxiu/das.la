@@ -1,34 +1,43 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.das-account-name{
-  font-size: 18px;
-  font-weight: 600;
-  color: #11142d;
-  word-break: break-all;
+.das-account-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #11142d;
+    word-break: break-all;
+}
+
+.bannerWraper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    border-radius: .4rem;
+    margin-bottom: 10px;
 }
 
 .dasAnimation {
-  width: 100wh;
-  color: #fff;
-  padding: 10px;
-  background: linear-gradient(-45deg, #eb9e87, #E73C7E, #23A6D5, #2e3332);
-  background-size: 400% 400%;
-  -webkit-animation: Gradient 15s ease infinite;
-  -moz-animation: Gradient 15s ease infinite;
-  animation: Gradient 15s ease infinite;
-  }
+    width: 100wh;
+    color: #fff;
+    padding: 10px;
+    background: linear-gradient(-45deg, #eb9e87, #E73C7E, #23A6D5, #2e3332);
+    background-size: 400% 400%;
+    -webkit-animation: Gradient 15s ease infinite;
+    -moz-animation: Gradient 15s ease infinite;
+    animation: Gradient 15s ease infinite;
+    display: flex;
+    flex-direction: column;
+}
 
 /*
 @-webkit-keyframes Gradient {

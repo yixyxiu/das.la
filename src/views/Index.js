@@ -1,8 +1,10 @@
 import React from 'react';
 import { Card, Space, Input, Button, Table, Alert, Avatar, Menu, Dropdown, Divider } from 'antd';
 import { SearchOutlined, RedoOutlined, DownOutlined } from '@ant-design/icons';
-import https from '../api/https'
+import { Carousel } from "react-responsive-carousel";
+import https from '../api/https';
 import TextArea from 'antd/lib/input/TextArea';
+import "react-responsive-carousel/lib/styles/carousel.min.css"
 
 
 var blake2b = require('blake2b');
@@ -11,12 +13,14 @@ let das = require('../mock/registered.json');
 das.suffixList = require('../mock/suffix.json');
 das.reserved = require('../mock/reserved.json');
 das.recommendList = require('../mock/recommendList.json');
+das.banners = require('../mock/banners.json');
+
 das.description = "DAS is a cross-chain decentralized account system with a .bit suffix, supporting ETH/TRX and other public chain. It can be used in scenes such as crypto transfers, domain name resolution, and identity authentication. "
 
 let localeConfig = require('../mock/lang.json');
 
 
-console.log(localeConfig)
+//console.log(das.banners)
 
 export default class AddShop extends React.Component {
 
@@ -30,6 +34,7 @@ export default class AddShop extends React.Component {
         recommendList: [
 
         ],
+        banners: das.banners,
         keywordList: [],
         animationClass: 'dasAnimation',
         columns: [
@@ -72,6 +77,7 @@ export default class AddShop extends React.Component {
     textAreaChange = e => {
         let snsArr = e.target.value
         snsArr = snsArr.split(/[\s\n]/);
+        console.log(snsArr)
         snsArr.forEach((item, index) => {
             if (!item) {
                 snsArr.splice(index, 1);//删除空项 
@@ -263,7 +269,7 @@ export default class AddShop extends React.Component {
           };
     */
 
-
+                 
     render() {
         const { list, recommendList, keywordList, columns } = this.state
 
@@ -272,6 +278,11 @@ export default class AddShop extends React.Component {
             this.setState({ locale: key });
             console.log(this.state.locale);
         };
+
+        const onClickCarouselItem = (index, item) => {
+            console.log(this.state.banners[index].link);
+            window.open(this.state.banners[index].link);
+          };
 
         const menu = (
             <Menu onClick={onLangMenuClick}>
@@ -282,6 +293,23 @@ export default class AddShop extends React.Component {
 
         return (
             <div className={this.state.animationClass}>
+                <div className="bannerWraper" >
+                    <Carousel
+                        autoPlay={true}
+                        showStatus={false}
+                        showThumbs={false}
+                        infiniteLoop
+                        centerMode
+                        emulateTouch
+                        swipeable
+                        centerSlidePercentage={50}
+                        onClickItem={ onClickCarouselItem }
+                    >
+                        {this.state.banners.map((value, index) => {
+                        return <div><img alt="" src={value.image} /></div>;
+                        })}
+                    </Carousel>
+                </div>
                 <Card title={this.langConfig('app-name')} bordered={false}>
                     <div style={{ display: 'inline-block', position: 'absolute', right: 15, top: 18, textAlign: 'right' }}>
                         <Dropdown overlay={menu} >
