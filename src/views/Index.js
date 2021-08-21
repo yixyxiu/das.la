@@ -1,10 +1,12 @@
 import React from 'react';
-import { Card, Space, Input, Button, Table, Alert, Avatar, Menu, Dropdown, Divider } from 'antd';
+import { Card, Space, Input, Button, Table, Alert, Avatar, Menu, Dropdown, Divider, Layout } from 'antd';
 import { SearchOutlined, RedoOutlined, DownOutlined } from '@ant-design/icons';
 import { Carousel } from "react-responsive-carousel";
 import https from '../api/https';
 import TextArea from 'antd/lib/input/TextArea';
 import "react-responsive-carousel/lib/styles/carousel.min.css"
+
+const { Footer } = Layout
 
 
 var blake2b = require('blake2b');
@@ -293,6 +295,7 @@ export default class AddShop extends React.Component {
 
         return (
             <div className={this.state.animationClass}>
+                <div className="content">
                 <div className="bannerWraper" >
                     <Carousel
                         autoPlay={true}
@@ -302,7 +305,7 @@ export default class AddShop extends React.Component {
                         centerMode
                         emulateTouch
                         swipeable
-                        centerSlidePercentage={50}
+                        centerSlidePercentage={75}
                         onClickItem={ onClickCarouselItem }
                     >
                         {this.state.banners.map((value, index) => {
@@ -333,11 +336,12 @@ export default class AddShop extends React.Component {
                     <Table rowKey={(item) => item.id} dataSource={list} columns={columns} rowClassName='das-account-name' showHeader={false} />
                     <br />
                 </Card>
+                <br/>
                 <Card title={this.langConfig('keyword-title')} bordered={false}>
                     <Alert message={this.langConfig('keyword-tips')} type="info" />
                     <br />
                     <div style={{ position: 'relative', paddingRight: 100 }}>
-                        <Input onBlur={(e) => this.keywordChanged(e)} placeholder="defi" allowClear maxLength={10} rows={1} />
+                        <Input onBlur={(e) => this.keywordChanged(e)} placeholder="defi" allowClear maxLength={10} rows={1} style={{ textAlign: 'right' }}/>
                         <div style={{ display: 'inline-block', position: 'absolute', right: 15, top: 0, width: 70, textAlign: 'right' }}>
                             <Button type="primary" shape="round" icon={<SearchOutlined />} onClick={() => this.keywordSearch()}>{this.langConfig('keyword-search')}</Button>
                         </div>
@@ -346,6 +350,7 @@ export default class AddShop extends React.Component {
                     <Table rowKey={(item) => item.id} dataSource={keywordList} columns={columns} rowClassName='das-account-name' showHeader={false} />
                     <br />
                 </Card>
+                <br/>
                 <Card title={this.langConfig('recommend-title')} bordered={false} extra={<Button type="primary" shape="round" danger icon={<RedoOutlined />} onClick={() => this.refreshRecommendList()}>{this.langConfig('recommend-change-list')}</Button>}>
                     <Alert
                         message={this.langConfig('recommend-warning')}
@@ -357,6 +362,8 @@ export default class AddShop extends React.Component {
                     <Table rowKey={(item) => item.id} dataSource={recommendList} columns={columns} rowClassName='das-account-name' showHeader={false} />
                     <br />
                 </Card>
+                <br/>
+            </div>
             </div>
         )
 
