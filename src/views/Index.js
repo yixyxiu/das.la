@@ -292,7 +292,8 @@ export default class AddShop extends React.Component {
                 <Menu.Item key="en_US">English</Menu.Item>
             </Menu>
         );
-
+        // 修改标题
+        document.title = this.langConfig('app-name');
         return (
             <div className={this.state.animationClass}>
                 <div className="content">
