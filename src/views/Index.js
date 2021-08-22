@@ -76,16 +76,18 @@ export default class AddShop extends React.Component {
         ]
     };
 
+
     textAreaChange = e => {
-        let snsArr = e.target.value
-        snsArr = snsArr.split(/[\s\n]/);
-        console.log(snsArr)
-        snsArr.forEach((item, index) => {
-            if (!item) {
-                snsArr.splice(index, 1);//删除空项 
-            }
-        })
-        this.setState({ snsArr: snsArr });
+        let article = e.target.value
+        let wordList = article.match(/[a-z0-9]+/gi);
+
+        if (wordList) {
+            wordList = [...new Set(wordList)].sort(function(a,b) {
+                return a.length - b.length;
+            });
+        }
+        
+        this.setState({ snsArr: (wordList ? wordList : "") });
     }
 
     search = () => {
@@ -97,6 +99,7 @@ export default class AddShop extends React.Component {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
+            
             //去标点符号并转小写
             item = item.replace(/\s/g, "").replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
             //过滤非数字和字母组合
@@ -133,7 +136,8 @@ export default class AddShop extends React.Component {
         if (text.length < 5)
             return false;
 
-        if (text.length > 9)
+        // 虽然 > 10 < 47 位都可以注册，但考虑到太长的账号没意义，在此只用15个字符以内的
+        if (text.length > 9 && text.length < 15)
             return true;
 
         // 5-9 位的，算法决定
