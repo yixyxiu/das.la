@@ -22,8 +22,6 @@ das.description = "DAS is a cross-chain decentralized account system with a .bit
 let localeConfig = require('../mock/lang.json');
 
 
-//console.log(das.banners)
-
 export default class AddShop extends React.Component {
 
 
@@ -82,11 +80,11 @@ export default class AddShop extends React.Component {
         let wordList = article.match(/[a-z0-9]+/gi);
 
         if (wordList) {
-            wordList = [...new Set(wordList)].sort(function(a,b) {
+            wordList = [...new Set(wordList)].sort(function (a, b) {
                 return a.length - b.length;
             });
         }
-        
+
         this.setState({ snsArr: (wordList ? wordList : "") });
     }
 
@@ -99,7 +97,7 @@ export default class AddShop extends React.Component {
         let arr = [];
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
-            
+
             //去标点符号并转小写
             item = item.replace(/\s/g, "").replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
             //过滤非数字和字母组合
@@ -260,8 +258,30 @@ export default class AddShop extends React.Component {
         }
     }
 
+    changeLanguage = (language) => {
+        //把用户的语言写入缓存，供下次获取使用
+        localStorage.setItem('locale', language)
+
+        this.setState({ locale: language });
+
+        console.log(this.state.locale);
+    }
+
     componentDidMount() {
-        //this.isReadyList(result)
+
+        let language = localStorage.getItem('locale') || window.navigator.language.toLowerCase() || 'en'; 
+        
+        //判断用户的语言，跳转到不同的地方
+        if (language.indexOf("zh-") !== -1) {
+            language = "zh_CN";
+        } else if (language.indexOf('en') !== -1) {
+            language = "en_US";
+        } else {
+            //其它的都使用英文
+            language = "en_US";
+        }
+
+        this.changeLanguage(language);
     }
 
     langConfig = (key) => {
@@ -275,20 +295,19 @@ export default class AddShop extends React.Component {
           };
     */
 
-                 
+
     render() {
         const { list, recommendList, keywordList, columns } = this.state
 
 
         const onLangMenuClick = ({ key }) => {
-            this.setState({ locale: key });
-            console.log(this.state.locale);
+            this.changeLanguage(key)
         };
 
         const onClickCarouselItem = (index, item) => {
             console.log(this.state.banners[index].link);
             window.open(this.state.banners[index].link);
-          };
+        };
 
         const menu = (
             <Menu onClick={onLangMenuClick}>
@@ -301,74 +320,74 @@ export default class AddShop extends React.Component {
         return (
             <div className={this.state.animationClass}>
                 <div className="content">
-                <div className="bannerWraper" >
-                    <Carousel
-                        autoPlay={true}
-                        showStatus={false}
-                        showThumbs={false}
-                        infiniteLoop
-                        centerMode
-                        emulateTouch
-                        swipeable
-                        centerSlidePercentage={75}
-                        onClickItem={ onClickCarouselItem }
-                    >
-                        {this.state.banners.map((value, index) => {
-                        return <div><img alt="" src={value.image} /></div>;
-                        })}
-                    </Carousel>
-                </div>
-                <Card title={this.langConfig('app-name')} bordered={false}>
-                    <div style={{ display: 'inline-block', position: 'absolute', right: 15, top: 18, textAlign: 'right' }}>
-                        <Dropdown overlay={menu} >
-                            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                                {this.langConfig('lang')} <DownOutlined />
-                            </a>
-                        </Dropdown>
-                        <Divider type="vertical" />
-                        <a style={{ color: '#1890ff' }} href="https://da.systems/explorer?inviter=cryptofans.bit&channel=cryptofans.bit&locale=zh-CN&utm_source=cryptofans+">{this.langConfig('about-das')}</a>
+                    <div className="bannerWraper" >
+                        <Carousel
+                            autoPlay={true}
+                            showStatus={false}
+                            showThumbs={false}
+                            infiniteLoop
+                            centerMode
+                            emulateTouch
+                            swipeable
+                            centerSlidePercentage={75}
+                            onClickItem={ onClickCarouselItem }
+                        >
+                            {this.state.banners.map((value, index) => {
+                                return <div><img alt="" src={value.image} /></div>;
+                            })}
+                        </Carousel>
                     </div>
+                    <Card title={this.langConfig('app-name')} bordered={false}>
+                        <div style={{ display: 'inline-block', position: 'absolute', right: 15, top: 18, textAlign: 'right' }}>
+                            <Dropdown overlay={menu} >
+                                <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                                    {this.langConfig('lang')} <DownOutlined />
+                                </a>
+                            </Dropdown>
+                            <Divider type="vertical" />
+                            <a style={{ color: '#1890ff' }} href="https://da.systems/explorer?inviter=cryptofans.bit&channel=cryptofans.bit&locale=zh-CN&utm_source=cryptofans+">{this.langConfig('about-das')}</a>
+                        </div>
 
-                    <Alert message={this.langConfig('wordlist-tips')} type="info" />
-                    <br />
-                    <div style={{ position: 'relative', paddingRight: 100 }}>
-                        <TextArea onChange={(e) => this.textAreaChange(e)} allowClear placeholder={das.description} rows={4} />
-                        <div style={{ display: 'inline-block', position: 'absolute', right: 15, top: 0, width: 70, textAlign: 'right' }}>
-                            <Button type="primary" shape="round" icon={<SearchOutlined />} onClick={() => this.search()}>{this.langConfig('wordlist-search')}</Button>
+                        <Alert message={this.langConfig('wordlist-tips')} type="info" />
+                        <br />
+                        <div style={{ position: 'relative', paddingRight: 100 }}>
+                            <TextArea onChange={(e) => this.textAreaChange(e)} allowClear placeholder={das.description} rows={4} />
+                            <div style={{ display: 'inline-block', position: 'absolute', right: 15, top: 0, width: 70, textAlign: 'right' }}>
+                                <Button type="primary" shape="round" icon={<SearchOutlined />} onClick={() => this.search()}>{this.langConfig('wordlist-search')}</Button>
+                            </div>
                         </div>
-                    </div>
+                        <br />
+                        <Table rowKey={(item) => item.id} dataSource={list} columns={columns} rowClassName='das-account-name' showHeader={false} />
+                        <br />
+                    </Card>
                     <br />
-                    <Table rowKey={(item) => item.id} dataSource={list} columns={columns} rowClassName='das-account-name' showHeader={false} />
-                    <br />
-                </Card>
-                <br/>
-                <Card title={this.langConfig('keyword-title')} bordered={false}>
-                    <Alert message={this.langConfig('keyword-tips')} type="info" />
-                    <br />
-                    <div style={{ position: 'relative', paddingRight: 100 }}>
-                        <Input onBlur={(e) => this.keywordChanged(e)} placeholder="defi" allowClear maxLength={10} rows={1} style={{ textAlign: 'right' }}/>
-                        <div style={{ display: 'inline-block', position: 'absolute', right: 15, top: 0, width: 70, textAlign: 'right' }}>
-                            <Button type="primary" shape="round" icon={<SearchOutlined />} onClick={() => this.keywordSearch()}>{this.langConfig('keyword-search')}</Button>
+                    <Card title={this.langConfig('keyword-title')} bordered={false}>
+                        <Alert message={this.langConfig('keyword-tips')} type="info" />
+                        <br />
+                        <div style={{ position: 'relative', paddingRight: 100 }}>
+                            <Input onBlur={(e) => this.keywordChanged(e)} placeholder="defi" allowClear maxLength={10} rows={1} style={{ textAlign: 'right' }} />
+                            <div style={{ display: 'inline-block', position: 'absolute', right: 15, top: 0, width: 70, textAlign: 'right' }}>
+                                <Button type="primary" shape="round" icon={<SearchOutlined />} onClick={() => this.keywordSearch()}>{this.langConfig('keyword-search')}</Button>
+                            </div>
                         </div>
-                    </div>
+                        <br />
+                        <Table rowKey={(item) => item.id} dataSource={keywordList} columns={columns} rowClassName='das-account-name' showHeader={false} />
+                        <br />
+                    </Card>
                     <br />
-                    <Table rowKey={(item) => item.id} dataSource={keywordList} columns={columns} rowClassName='das-account-name' showHeader={false} />
+                    <Card title={this.langConfig('recommend-title')} bordered={false} extra={<Button type="primary" shape="round" danger icon={<RedoOutlined />} onClick={() => this.refreshRecommendList()}>{this.langConfig('recommend-change-list')}</Button>}>
+                        <Alert
+                            message={this.langConfig('recommend-warning')}
+                            description={this.langConfig('recommend-tips')}
+                            type="warning"
+                            showIcon
+                        />
+                        <br></br>
+                        <Table rowKey={(item) => item.id} dataSource={recommendList} columns={columns} rowClassName='das-account-name' showHeader={false} />
+                        <br />
+                    </Card>
                     <br />
-                </Card>
-                <br/>
-                <Card title={this.langConfig('recommend-title')} bordered={false} extra={<Button type="primary" shape="round" danger icon={<RedoOutlined />} onClick={() => this.refreshRecommendList()}>{this.langConfig('recommend-change-list')}</Button>}>
-                    <Alert
-                        message={this.langConfig('recommend-warning')}
-                        description={this.langConfig('recommend-tips')}
-                        type="warning"
-                        showIcon
-                    />
-                    <br></br>
-                    <Table rowKey={(item) => item.id} dataSource={recommendList} columns={columns} rowClassName='das-account-name' showHeader={false} />
-                    <br />
-                </Card>
-                <br/>
-            </div>
+                </div>
             </div>
         )
 
