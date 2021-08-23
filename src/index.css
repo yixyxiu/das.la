@@ -29,6 +29,7 @@ code {
     height: 100%;
     overflow: hidden;
     box-sizing: border-box;
+    -webkit-transform: rotate(0deg);
     border-radius: .4rem;
     margin-bottom: 10px;
 }
@@ -58,20 +59,19 @@ display: flex;
     margin: auto;
 }
 
-/*
+
 .ant-card-head-title {
   display: inline-block;
   -ms-flex: 1;
   flex: 1 1;
   padding: 1px 0;
+  margin-left: -1rem;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-family: TTNormsProVarRoman, sans-serif;
-  font-weight: bold;
-  font-size: larger;
 }
 
+/*
 .ant-alert-message {
   color: rgba(0, 0, 0, 0.85);
   font-size: larger;
